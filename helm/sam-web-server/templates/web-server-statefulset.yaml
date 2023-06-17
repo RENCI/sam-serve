@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "sam-web-server.fullname" . }}
+  labels:
+    {{- include "sam-web-server.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "sam-web-server.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "sam-web-server.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "sam-web-server.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+          - 'uvicorn'
+          args:
+          - '--port'
+          - '8080'
+          - '--host'
+          - '0.0.0.0'
+          - src.server:app
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+          volumeMounts:
+          - name: data-config
+            mountPath: /var/web/sam-serve/config.yaml
+            subPath: "config.yaml"
+          - name: samdata
+            mountPath: /data
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: data-config
+          configMap:
+            name: {{ include "sam-web-server.fullname" . }}-data-configmap
+            defaultMode: 0777
+        - name: samdata
+          persistentVolumeClaim:
+            claimName: samdata
+  volumeClaimTemplates:
+    - metadata:
+        name: samdata              
+      spec:
+        accessModes: [ "ReadWritexxMany" ]
+        resources:
+          requests:
+            storage: {{ .Values.storage.size }}
+{{ end }}

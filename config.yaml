@@ -1,0 +1,9 @@
+# config class for models and data used by the server 
+
+model:
+  name: "ViT_H SAM model"
+  path: "/data/model/sam_vit_h_4b8939.pth"
+data:
+  purple_box:
+    path: "/data/purple_box/image/FKP4_L57D855P1_topro_purplebox_x200y1400z0530.tif"
+    embedding: "/data/purple_box/embedding/purple_box_embedding.npy"
