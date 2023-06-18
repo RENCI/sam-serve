@@ -6,13 +6,13 @@ metadata:
     {{- include "sam-web-server.labels" . | nindent 4 }}
 data:
   config.yaml: |-
-    {{ range $key, $value := .Values.dataConfig.model }}
+    {{ range $key, $value := .Values.dataConfig }}
     {{ $key | nindent 4 }}:
-      {{ print "name: " $value.name | nindent 6 }}
-      {{ print "path: " $value.path | nindent 6 }}
-    {{ end }}
-    {{ range $key, $value := .Values.dataConfig.data }}
-    {{ $key | nindent 4 }}:
-      {{ print "path: " $value.path | nindent 6 }}
-      {{ print "embedding: " $value.embedding | nindent 6 }}
-    {{ end }}
+      {{ if eq $key "model" }}
+        {{ print "name: " $value.name | nindent 6 }}
+        {{ print "path: " $value.path | nindent 6 }}
+      {{ else }}
+        {{ print "path: " $value.path | nindent 6 }}
+        {{ print "embedding: " $value.embedding | nindent 6 }}
+      {{ end }}
+    {{ end }}  
