@@ -12,10 +12,10 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Run model prediction on an image")
     parser.add_argument("--input_data_file", type=str, help="Input file path",
-                        default='/data/purple_box/image/'
+                        default='/data/purple_box/'
                                 'FKP4_L57D855P1_topro_purplebox_x200y1400z0530.tif')
     parser.add_argument("--output_data_file", type=str, help="Output file path",
-                        default='/data/purple_box/embedding/purple_box_masks.json')
+                        default='/data/purple_box/FKP4_L57D855P1_topro_purplebox_x200y1400z0530.json')
     parser.add_argument("--model_file", type=str, default='/data/model/sam_vit_h_4b8939.pth',
                         help="path for the model to load for inference")
 
