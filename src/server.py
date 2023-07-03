@@ -31,7 +31,7 @@ async def get_model_names() -> ModelResponse:
 
 
 @app.get("/data_info/")
-async def get_data_info() -> list[DataInfoResponse]:
+async def get_data_info():
     ret = []
     for key, val in SAMConfig.data.items():
         ret.append({
