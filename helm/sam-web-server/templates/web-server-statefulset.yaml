@@ -51,9 +51,6 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
 
           volumeMounts:
-          - name: data-config
-            mountPath: /var/web/sam-serve/config.yaml
-            subPath: "config.yaml"
           - name: samdata
             mountPath: /data
       {{- with .Values.nodeSelector }}
@@ -69,10 +66,6 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
-        - name: data-config
-          configMap:
-            name: {{ include "sam-web-server.fullname" . }}-data-configmap
-            defaultMode: 0777
         - name: samdata
           persistentVolumeClaim:
             claimName: samdata

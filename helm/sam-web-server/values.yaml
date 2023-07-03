@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: renci/nemo-sam-serve
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "23.03"
 
@@ -50,15 +50,6 @@ ingress:
 
 storage:
   size: 100Gi
-
-dataConfig:
-  model:
-    name: "ViT_H SAM model"
-    path: "/data/model/sam_vit_h_4b8939.pth"
-  data:
-    purple_box:
-      path: "/data/purple_box/FKP4_L57D855P1_topro_purplebox_x200y1400z0530.tif"
-      embedding: "/data/purple_box/embedding/slice_{}.npy"
 
 resources:
 
