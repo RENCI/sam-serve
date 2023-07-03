@@ -6,7 +6,7 @@ from fastapi import HTTPException
 import uvicorn
 import logging
 from src.ConfigSingleton import init_configuration, SAMConfig
-from src.ApiDataStructs import ModelResponse, DataInfoResponse
+from src.ApiDataStructs import ModelResponse
 
 
 app = FastAPI()
