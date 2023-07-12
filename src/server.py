@@ -31,7 +31,7 @@ async def get_model_names() -> ModelResponse:
     return ModelResponse(name=SAMModel.model_name)
 
 
-@app.get("/image_slice_embedding", response_class=OctetStreamResponse)
+@app.post("/image_slice_embedding", response_class=OctetStreamResponse)
 async def get_image_slice_embedding(image: UploadFile = File(...)):
     SAMModel.set_uploaded_image(image.file)
     image_embedding = SAMModel.model_predictor.get_image_embedding().cpu().numpy()
