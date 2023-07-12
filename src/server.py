@@ -10,6 +10,10 @@ app = FastAPI()
 logger = logging.getLogger('gunicorn.error')
 
 
+class OctetStreamResponse(Response):
+    media_type = "application/octet-stream"
+
+
 @app.on_event("startup")
 def load_info():
     config_file_path = os.environ.get('CONFIG_PATH',
@@ -27,7 +31,7 @@ async def get_model_names() -> ModelResponse:
     return ModelResponse(name=SAMModel.model_name)
 
 
-@app.get("/image_slice_embedding")
+@app.get("/image_slice_embedding", response_class=OctetStreamResponse)
 async def get_image_slice_embedding(image: UploadFile = File(...)):
     SAMModel.set_uploaded_image(image.file)
     image_embedding = SAMModel.model_predictor.get_image_embedding().cpu().numpy()
