@@ -6,8 +6,8 @@ replicaCount: 1
 
 image:
   repository: renci/nemo-sam-serve
-  # pullPolicy: IfNotPresent
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
+  # pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "23.03"
 
@@ -38,6 +38,7 @@ ingress:
   annotations:
     nginx.ingress.kubernetes.io/enable-cors: "true"
     cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/proxy-body-size: 1000m
   hosts:
     - host: sam.apps.renci.org
       paths:
