@@ -2,10 +2,5 @@
 
 model:
   name: "ViT_H SAM model"
+  type: "vit_h"
   path: "/data/model/sam_vit_h_4b8939.pth"
-data:
-  purple_box:
-    path: "/data/purple_box/FKP4_L57D855P1_topro_purplebox_x200y1400z0530.tif"
-    embedding: "/data/purple_box/embedding/slice_{}.npy"
-    total_slices: 64
-
