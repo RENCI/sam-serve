@@ -40,7 +40,8 @@ async def get_image_slice_embedding(image: UploadFile = File(...)):
                     headers={
                         'Content-Length': str(len(embedding_bytes)),
                         'X-Numpy-Dtype': str(image_embedding.dtype),
-                        'X-Numpy-Shape': str(image_embedding.shape)
+                        'X-Numpy-Shape': str(image_embedding.shape).replace('(', '[').replace(')', ']'),
+                        'Access-Control-Expose-Headers': '*'
                     },
                     media_type="application/octet-stream")
 
