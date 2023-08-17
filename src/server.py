@@ -35,7 +35,14 @@ async def get_model_names() -> ModelResponse:
 async def get_image_slice_embedding(image: UploadFile = File(...)):
     SAMModel.set_uploaded_image(image.file)
     image_embedding = SAMModel.model_predictor.get_image_embedding().cpu().numpy()
-    return Response(content=image_embedding.tobytes(), media_type="application/octet-stream")
+    embedding_bytes = image_embedding.tobytes()
+    return Response(content=embedding_bytes,
+                    headers={
+                        'Content-Length': len(embedding_bytes),
+                        'X-Numpy-Dtype': str(image_embedding.dtype),
+                        'X-Numpy-Shape': str(image_embedding.shape)
+                    },
+                    media_type="application/octet-stream")
 
 
 if __name__ == '__main__':
