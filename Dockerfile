@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN mkdir /var/web
 WORKDIR /var/web
 
-RUN git clone https://github.com/RENCI/sam-serve.git
+RUN git clone -b debug https://github.com/RENCI/sam-serve.git
 
 WORKDIR /var/web/sam-serve
 

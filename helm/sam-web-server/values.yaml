@@ -5,9 +5,9 @@
 replicaCount: 1
 
 image:
-  repository: renci/nemo-sam-serve
-  pullPolicy: IfNotPresent
-  # pullPolicy: Always
+  repository: renci/nemo-sam-serve-debug
+  # pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "23.03"
 
