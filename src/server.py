@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, UploadFile, File, Response
+from fastapi import FastAPI, UploadFile, File, Response, Query
 import uvicorn
 import logging
 import shutil
@@ -33,14 +33,15 @@ async def get_model_names() -> ModelResponse:
 
 
 @app.post("/image_slice_embedding", response_class=OctetStreamResponse)
-async def get_image_slice_embedding(image: UploadFile = File(...)):
-    with open(f'/data/test_server/image_slice_{image.file.name}', "wb") as buffer:
+async def get_image_slice_embedding(image: UploadFile = File(...), slice_no: int = Query(...)):
+    with open(f'/data/test_server/image_slice_{slice_no}', "wb") as buffer:
         shutil.copyfileobj(image.file, buffer)
 
     SAMModel.set_uploaded_image(image.file)
     image_embedding = SAMModel.model_predictor.get_image_embedding().cpu().numpy()
     embedding_bytes = image_embedding.tobytes()
-    with open(f'/data/test_server/raw/image_slice_embedding_{image.file.name}', "wb") as emb_file:
+    with open(f'/data/test_server/raw/FKP4_L57D855P1_topro_purplebox_x200y1400z0530_embedding__{slice_no}.bin',
+              "wb") as emb_file:
         emb_file.write(embedding_bytes)
 
     return Response(content=embedding_bytes,
